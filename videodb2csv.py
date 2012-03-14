@@ -14,8 +14,8 @@ from xml.sax.saxutils import unescape
 #If you have smb:// paths you will have to enable xbmc web interface so we can get the filesize
 #You will have to configure these too
 username='xbmc'
-password='xent2001'
-baseurl='192.168.1.115:8080' #dont forget the port if not 80
+password='xbmcpass'
+baseurl='192.168.1.1:8080' #dont forget the port if not 80
 
 #gets XML elements
 def getElems(fc,elem):
