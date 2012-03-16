@@ -28,13 +28,13 @@ baseurl = '192.168.1.1:8080' # Don't forget the port if it is not 80
 # Setup usage and options
 usage = "usage: %prog [options] -f parse_file -o output_file\r\n"
 parser = OptionParser(usage)
-parser.add_option("-f", "--filename", dest="parsefile", default=False,
-                  metavar="FILE", help="write output to FILE")
-parser.add_option("-o", "--output", dest="output", default=False,
-                  metavar="FILE", help="write output to FILE")
-parser.add_option("-n","--nofilesize",
-                  action="store_true", dest="nofilesize", default=False,
-                  help="exclude filesize lookup")
+parser.add_option("-f", "--filename", dest = "parsefile", default = False,
+                  metavar = "FILE", help = "write output to FILE")
+parser.add_option("-o", "--output", dest = "output", default = False,
+                  metavar = "FILE", help = "write output to FILE")
+parser.add_option("-n", "--nofilesize",
+                  action = "store_true", dest = "nofilesize", default = False,
+                  help = "exclude filesize lookup")
 (options, args) = parser.parse_args()
 
 if options.parsefile is False or options.output is False :
@@ -121,7 +121,7 @@ for movie in movies:
     #o.writelines(path + '\r\n')
     filesize = ""
     bytez = ""
-    if options.nofilesize is True:
+    if options.nofilesize is False:
         #smb path must use xbmc web interface to get filesize
         if 'smb://' in path:
             url_path = urllib.quote_plus(path)
@@ -160,5 +160,5 @@ for movie in movies:
     filename = path.replace(getElem(movie, "basepath"), "")
     #print csv line
     # "Title","Year","Filesize","Bytes","Width","Height","Videocodec","Audiocodec","IMDB","Filename","Fullpath"
-    o.writelines('"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"\r\n' % \
+    o.writelines('"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"\n' % \
         (title, year, filesize, bytez, width, height, vcodec, acodec, imdb, filename, fullpath))
