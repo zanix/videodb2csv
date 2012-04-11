@@ -21,31 +21,31 @@ from optparse import OptionParser
 # You will have to configure these too
 username = 'xbmc'
 password = 'xbmcpass'
-baseurl = '192.168.1.1:8080' # Don't forget the port if it is not 80
-
+baseurl = '192.168.1.1:8080'  # Don't forget the port if it is not 80
 
 
 # Setup usage and options
 usage = "usage: %prog [options] -f parse_file -o output_file\r\n"
 parser = OptionParser(usage)
-parser.add_option("-f", "--filename", dest = "parsefile", default = False,
-                  metavar = "FILE", help = "write output to FILE")
-parser.add_option("-o", "--output", dest = "output", default = False,
-                  metavar = "FILE", help = "write output to FILE")
+parser.add_option("-f", "--filename", dest="parsefile", default=False,
+                  metavar="FILE", help="write output to FILE")
+parser.add_option("-o", "--output", dest="output", default=False,
+                  metavar="FILE", help="write output to FILE")
 parser.add_option("-n", "--nofilesize",
-                  action = "store_true", dest = "nofilesize", default = False,
-                  help = "exclude filesize lookup")
+                  action="store_true", dest="nofilesize", default=False,
+                  help="exclude filesize lookup")
 (options, args) = parser.parse_args()
 
-if options.parsefile is False or options.output is False :
+if options.parsefile is False or options.output is False:
     sys.stderr.write(usage)
     sys.exit(1)
 
 
 # Gets XML elements
 def getElems(fc, elem):
-    a = re.findall("<"+elem+">(.+?)</"+elem+">", fc, re.M|re.DOTALL)
+    a = re.findall("<" + elem + ">(.+?)</" + elem + ">", fc, re.M | re.DOTALL)
     return a
+
 
 # Gets single XML element
 def getElem(fc, elem):
@@ -55,13 +55,15 @@ def getElem(fc, elem):
     else:
         return ""
 
+
 # Fix path issues
 def correctPath(path):
-    if path.find("stack://") >- 1:
+    if path.find("stack://") > - 1:
         path = path.replace("stack://", "")
         path = path.replace(" , ", "*")
         path = path.replace(",,", ",")
     return path
+
 
 #filesize human readable format
 def convert_bytes(bytes):
@@ -73,21 +75,23 @@ def convert_bytes(bytes):
         size = '%.2fb' % bytes
     return size
 
+
 def clean_video_codec(vcodec):
     #Cleans up codec output
-    if vcodec == "divx3low/div3/mpeg-4visual/div3/divx3low" :
+    if vcodec == "divx3low/div3/mpeg-4visual/div3/divx3low":
         vcodec = "MP4 (DivX 3)"
-    elif vcodec == "v_mpeg4/iso/avc/avc/v_mpeg4/iso/avc/avc" :
+    elif vcodec == "v_mpeg4/iso/avc/avc/v_mpeg4/iso/avc/avc":
         vcodec = "MP4 (AVC)"
-    elif vcodec == "xvid/xvid/mpeg-4visual/xvid/xvid" :
+    elif vcodec == "xvid/xvid/mpeg-4visual/xvid/xvid":
         vcodec = "MP4 (Xvid)"
-    elif vcodec == "divx5/dx50/mpeg-4visual/dx50/divx5" :
+    elif vcodec == "divx5/dx50/mpeg-4visual/dx50/divx5":
         vcodec = "MP4 (DivX 5)"
     elif vcodec == "avc1/avc/avc/avc" or vcodec == "/avc/avc/avc":
         vcodec = "AVC"
     elif vcodec == "xvid":
         vcodec = "Xvid"
     return vcodec
+
 
 def clean_audio_codec(acodec):
     if acodec == "ac3" or acodec == "ac-3/ac3/ac3":
@@ -132,14 +136,14 @@ for movie in movies:
             bytez = re.sub("\D", "", bytez)
             #bytez = bytesstrip()
             if not bytez > 0:
-                continue #file not found, skip it
+                continue  # file not found, skip it
             filesize = convert_bytes(bytez)
         #get path via os
-        elif os.path.exists(path) :
+        elif os.path.exists(path):
             bytez = os.path.getsize(path)
             filesize = convert_bytes(bytez)
         #can't find file, skip to next movie
-        else :
+        else:
             continue
     #get xml elements
     title = getElem(movie, "title").replace("\"", "'")
